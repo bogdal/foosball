@@ -1,0 +1,6 @@
+.*
+!.gitignore
+*~
+*.sqlite3
+*.pyc
+*\.egg*
