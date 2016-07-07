@@ -1,0 +1,19 @@
+postgres:
+  image: postgres
+  environment:
+    - POSTGRES_USER=foosball
+    - POSTGRES_PASSWORD=foosball
+web:
+  build: .
+  environment:
+    - DATABASE_URL=postgres://foosball:foosball@postgres/foosball
+    - SECRET_KEY
+    - SLACK_CLIENT_ID
+    - SLACK_CLIENT_SECRET
+    - SLACK_VERIFICATION_TOKEN
+  links:
+    - postgres
+  ports:
+    - '8000:8000'
+  volumes:
+    - .:/app
