@@ -70,8 +70,8 @@ def slack(request):
                 'color': color,
                 'attachment_type': 'default',
                 'actions': [{
-                    'name': 'Add me',
-                    'text': 'Add me',
+                    'name': 'Join / Leave',
+                    'text': 'Join / Leave',
                     'type': 'button',
                     'value': 'add'}]}]}
 
@@ -85,10 +85,11 @@ def slack(request):
             players = re.findall('(?<=@)\w+', value)
             if action['value'] == 'add':
                 if data['user']['name'] in players:
-                    return HttpResponse()
-                players.append(data['user']['name'])
+                    players.remove(data['user']['name'])
+                else:
+                    players.append(data['user']['name'])
                 message['attachments'][0]['fields'] = [{
-                    'title': 'Players',
+                    'title': 'Players' if players else '',
                     'value': get_players(players)}]
 
             if len(players) == 4:
