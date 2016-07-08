@@ -75,7 +75,7 @@ def slack(request):
                     'type': 'button',
                     'value': 'add'}]}]}
 
-        def get_players(items, link_names=False):
+        def get_players(items, link_names=True):
             display = '<@%s>' if link_names else '@%s'
             return ', '.join(map(lambda x: display % x, items))
 
@@ -90,7 +90,7 @@ def slack(request):
                     players.append(data['user']['name'])
                 message['attachments'][0]['fields'] = [{
                     'title': 'Players' if players else '',
-                    'value': get_players(players)}]
+                    'value': get_players(players, link_names=False)}]
 
             if len(players) == 4:
                 random.shuffle(players)
