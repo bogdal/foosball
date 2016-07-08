@@ -74,6 +74,10 @@ def slack(request):
                     'text': 'Join / Leave',
                     'type': 'button',
                     'value': 'add'}]}]}
+        if data.get('command'):
+            message['attachments'][0]['fields'] = [{
+                    'title': 'Players',
+                    'value': '@%s' % data['user_name']}]
 
         def get_players(items, link_names=True):
             display = '<@%s>' if link_names else '@%s'
