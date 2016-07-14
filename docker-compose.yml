@@ -3,16 +3,32 @@ postgres:
   environment:
     - POSTGRES_USER=foosball
     - POSTGRES_PASSWORD=foosball
+redis:
+  image: redis
+worker:
+  build: .
+  command: celery -A foosball worker -l info
+  environment:
+    - DATABASE_URL=postgres://foosball:foosball@postgres/foosball
+    - REDIS_URL=redis://redis/
+    - SECRET_KEY
+  links:
+    - postgres
+    - redis
+  volumes:
+    - .:/app
 web:
   build: .
   environment:
     - DATABASE_URL=postgres://foosball:foosball@postgres/foosball
+    - REDIS_URL=redis://redis/
     - SECRET_KEY
     - SLACK_CLIENT_ID
     - SLACK_CLIENT_SECRET
     - SLACK_VERIFICATION_TOKEN
   links:
     - postgres
+    - redis
   ports:
     - '8000:8000'
   volumes:
